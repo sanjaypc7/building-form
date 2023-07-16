@@ -1,0 +1,382 @@
+import React, { useState } from 'react';
+
+const YourComponent = () => {
+  const [tableData, setTableData] = useState([
+    {
+      orderId: '',
+      itemNr: '',
+      materialId: '',
+      matDescription: '',
+      currentQty: '',
+      previousQty: '',
+      qtyDiff: '',
+      orderComment: '',
+      date1: '',
+      date2: '',
+      date3: ''
+    }
+  ]);
+
+  const [editIndex, setEditIndex] = useState(-1);
+  const [remarks, setRemarks] = useState('');
+  const [prefBy, setPrefBy] = useState('');
+  const [chkBy, setChkBy] = useState('');
+  const [approvedBy, setApprovedBy] = useState('');
+  const [field1, setField1] = useState('');
+  const [field2, setField2] = useState('');
+
+  const handleInputChange = (index, field, value) => {
+    if (editIndex === -1) {
+      const updatedData = [...tableData];
+      updatedData[index][field] = value;
+      setTableData(updatedData);
+    }
+  };
+
+  const handleAddRow = () => {
+    const newRow = {
+      orderId: '',
+      itemNr: '',
+      materialId: '',
+      matDescription: '',
+      currentQty: '',
+      previousQty: '',
+      qtyDiff: '',
+      orderComment: '',
+      date1: '',
+      date2: '',
+      date3: ''
+    };
+
+    setTableData([...tableData, newRow]);
+    setEditIndex(-1);
+  };
+
+  const handleRemoveRow = (index) => {
+    const updatedData = [...tableData];
+    updatedData.splice(index, 1);
+    setTableData(updatedData);
+  };
+
+  const handleEditRow = (index) => {
+    setEditIndex(index);
+  };
+
+  const handleSaveRow = (index) => {
+    setEditIndex(-1);
+  };
+
+  const handleRemarksChange = (event) => {
+    setRemarks(event.target.value);
+  };
+
+  const handlePrefByChange = (event) => {
+    setPrefBy(event.target.value);
+  };
+
+  const handleChkByChange = (event) => {
+    setChkBy(event.target.value);
+  };
+
+  const handleApprovedByChange = (event) => {
+    setApprovedBy(event.target.value);
+  };
+
+  const handleField1Change = (event) => {
+    setField1(event.target.value);
+  };
+
+  const handleField2Change = (event) => {
+    setField2(event.target.value);
+  };
+
+  const renderTableButtons = (index) => {
+    if (index === tableData.length - 1) {
+      return (
+        <div>
+          <button onClick={handleAddRow}>Add</button>
+        </div>
+      );
+    }
+    if (index === editIndex) {
+      return (
+        <div>
+          <button onClick={() => handleSaveRow(index)}>Save</button>
+        </div>
+      );
+    }
+    return (
+      <div>
+        <button onClick={() => handleRemoveRow(index)}>Remove</button>
+        <button onClick={() => handleEditRow(index)} disabled={editIndex !== -1}>
+          Edit
+        </button>
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <div>
+        <h1 style={{ backgroundColor: 'blue', color: 'white' }}>Order Materials</h1>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <form>
+            <label htmlFor="orderListId">Order List ID:</label>
+            <input type="text" id="orderListId" name="orderListId" style={{ width: '150px' }}  />
+          </form>
+
+          <form>
+            <label htmlFor="buildingId">Building ID:</label>
+            <input type="text" id="buildingId" name="buildingId" />
+          </form>
+
+          <form>
+            <label htmlFor="buildingName">Building Name:</label>
+            <input type="text" id="buildingName" name="buildingName" />
+          </form>
+
+          <form>
+            <label htmlFor="buildingAddress">Building Address:</label>
+            <input type="text" id="buildingAddress" name="buildingAddress" />
+          </form>
+        </div>
+
+        <form>
+          <label htmlFor="orderDescription">Order Description:</label>
+          <textarea id="orderDescription" name="orderDescription" />
+        </form>
+      </div>
+
+      <div style={{ backgroundColor: 'yellow', overflowX: 'auto' }}>
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Item Nr</th>
+              <th>Material ID</th>
+              <th>Mat. Description</th>
+              <th>Current Qty</th>
+              <th>Previous Qty</th>
+              <th>Qty Diff</th>
+              <th>Order Comment</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableData.map((row, index) => (
+              <tr key={index}>
+                <td>
+                  <input
+                    type="text"
+                    value={row.orderId}
+                    onChange={(e) => handleInputChange(index, 'orderId', e.target.value)}
+                    style={{ width: '80px' }}
+                    required
+                    disabled={index !== tableData.length - 1 && index !== editIndex}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.itemNr}
+                    onChange={(e) => handleInputChange(index, 'itemNr', e.target.value)}
+                    required
+                    disabled={index !== tableData.length - 1 && index !== editIndex}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.materialId}
+                    onChange={(e) => handleInputChange(index, 'materialId', e.target.value)}
+                    style={{ width: '120px' }}
+                    required
+                    disabled={index !== tableData.length - 1 && index !== editIndex}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.matDescription}
+                    onChange={(e) => handleInputChange(index, 'matDescription', e.target.value)}
+                    required
+                    disabled={index !== tableData.length - 1 && index !== editIndex}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.currentQty}
+                    onChange={(e) => handleInputChange(index, 'currentQty', e.target.value)}
+                    required
+                    disabled={index !== tableData.length - 1 && index !== editIndex}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.previousQty}
+                    onChange={(e) => handleInputChange(index, 'previousQty', e.target.value)}
+                    required
+                    disabled={index !== tableData.length - 1 && index !== editIndex}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.qtyDiff}
+                    onChange={(e) => handleInputChange(index, 'qtyDiff', e.target.value)}
+                    required
+                    disabled={index !== tableData.length - 1 && index !== editIndex}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.orderComment}
+                    onChange={(e) => handleInputChange(index, 'orderComment', e.target.value)}
+                    required
+                    disabled={index !== tableData.length - 1 && index !== editIndex}
+                  />
+                </td>
+                <td>{renderTableButtons(index)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <label htmlFor="remarks">Remarks:</label>
+        <input
+          type="text"
+          id="remarks"
+          name="remarks"
+          value={remarks}
+          onChange={handleRemarksChange}
+          style={{ width: '500px' }}
+        />
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '10px' }}>
+        <div style={{ marginRight: '20px' }}>
+          <label htmlFor="prefBy">Pref. By:</label>
+          <br />
+          <input
+            type="text"
+            id="prefBy"
+            name="prefBy"
+            value={prefBy}
+            onChange={handlePrefByChange}
+            style={{ width: '200px' }}
+          />
+        </div>
+        <div style={{ marginRight: '20px' }}>
+          <label htmlFor="approvedBy">Approved By:</label>
+          <br />
+          <input
+            type="text"
+            id="approvedBy"
+            name="approvedBy"
+            value={approvedBy}
+            onChange={handleApprovedByChange}
+            style={{ width: '200px' }}
+          />
+        </div>
+        <div style={{ marginRight: '20px' }}>
+          <label htmlFor="chkBy">Chk. By:</label>
+          <br />
+          <input
+            type="text"
+            id="chkBy"
+            name="chkBy"
+            value={chkBy}
+            onChange={handleChkByChange}
+            style={{ width: '200px' }}
+          />
+        </div>
+        <div style={{ marginLeft: '20px' }}>
+          <label htmlFor="field1">Building ID:</label>
+          <br />
+          <input
+            type="text"
+            id="field1"
+            name="field1"
+            value={field1}
+            onChange={handleField1Change}
+            style={{ width: '200px' }}
+            disabled
+          />
+        </div>
+        <div style={{ marginLeft: '20px' }}>
+          <label htmlFor="field2">Building Name:</label>
+          <br />
+          <input
+            type="text"
+            id="field2"
+            name="field2"
+            value={field2}
+            onChange={handleField2Change}
+            style={{ width: '200px' }}
+            disabled
+          />
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '10px' }}>
+        <div style={{ marginRight: '20px' }}>
+          <label htmlFor="date1">Date 1:</label>
+          <br />
+          <input
+            type="text"
+            id="date1"
+            name="date1"
+            value={tableData[0].date1}
+            onChange={(e) => handleInputChange(0, 'date1', e.target.value)}
+            style={{ width: '200px' }}
+          />
+          <br />
+          <button class="btn btn-primary">Send for Chk</button>
+        </div>
+        <div style={{ marginRight: '20px' }}>
+          <label htmlFor="date2">Date 2:</label>
+          <br />
+          <input
+            type="text"
+            id="date2"
+            name="date2"
+            value={tableData[0].date2}
+            onChange={(e) => handleInputChange(0, 'date2', e.target.value)}
+            style={{ width: '200px' }}
+          />
+          <br />
+          <button class="btn btn-primary">Send for App</button>
+        </div>
+        <div>
+          <label htmlFor="date3">Date 3:</label>
+          <br />
+          <input
+            type="text"
+            id="date3"
+            name="date3"
+            value={tableData[0].date3}
+            onChange={(e) => handleInputChange(0, 'date3', e.target.value)}
+            style={{ width: '200px' }}
+          />
+          <br />
+          <button class="btn btn-primary">Approve</button>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '3%', marginLeft: '10%' }}>
+          <button style={{ marginRight: '10px', height: '30px' }}>Delete</button>
+          <button style={{ marginRight: '10px', height: '30px' }}>Cancel</button>
+          <button style={{ marginRight: '10px', height: '30px' }}>Save</button>
+        </div>
+
+
+      </div>
+    </div>
+  );
+};
+
+export default YourComponent;
